@@ -4,10 +4,10 @@ import { User } from '../../model';
 import { generateToken } from '../../auth';
 import { getContext, setupTest } from '../../../test/helper';
 
-beforeEach(async () => await setupTest());
+beforeEach(async () => setupTest());
 
 it('should not login if email is not in the database', async () => {
-  //language=GraphQL
+  // language=GraphQL
   const query = `
     mutation M {
       LoginEmail(input: {
@@ -18,7 +18,7 @@ it('should not login if email is not in the database', async () => {
         clientMutationId
         token
         error
-      }     
+      }
     }
   `;
 
@@ -40,7 +40,7 @@ it('should not login with wrong email', async () => {
   });
   await user.save();
 
-  //language=GraphQL
+  // language=GraphQL
   const query = `
     mutation M {
       LoginEmail(input: {
@@ -51,7 +51,7 @@ it('should not login with wrong email', async () => {
         clientMutationId
         token
         error
-      }     
+      }
     }
   `;
 
@@ -76,7 +76,7 @@ it('should generate token when email and password is correct', async () => {
   });
   await user.save();
 
-  //language=GraphQL
+  // language=GraphQL
   const query = `
     mutation M {
       LoginEmail(input: {
@@ -87,7 +87,7 @@ it('should generate token when email and password is correct', async () => {
         clientMutationId
         token
         error
-      }     
+      }
     }
   `;
 

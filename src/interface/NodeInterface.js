@@ -5,7 +5,6 @@ import { nodeDefinitions, fromGlobalId } from 'graphql-relay';
 import User from '../loader/UserLoader';
 import { UserLoader } from '../loader';
 
-import QueryType from '../type/QueryType';
 import UserType from '../type/UserType';
 
 const { nodeField, nodeInterface } = nodeDefinitions(

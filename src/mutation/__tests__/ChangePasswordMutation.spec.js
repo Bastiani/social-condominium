@@ -1,13 +1,12 @@
 import { graphql } from 'graphql';
 import { schema } from '../../schema';
 import { User } from '../../model';
-import { generateToken } from '../../auth';
 import { getContext, setupTest } from '../../../test/helper';
 
-beforeEach(async () => await setupTest());
+beforeEach(async () => setupTest());
 
 it('should not change password of non authorized user', async () => {
-  //language=GraphQL
+  // language=GraphQL
   const query = `
     mutation M {
       ChangePassword(input: {
@@ -39,7 +38,7 @@ it('should not change password if oldPassword is invalid', async () => {
   });
   await user.save();
 
-  //language=GraphQL
+  // language=GraphQL
   const query = `
     mutation M {
       ChangePassword(input: {
@@ -72,7 +71,7 @@ it('should change password if oldPassword is correct', async () => {
   });
   await user.save();
 
-  //language=GraphQL
+  // language=GraphQL
   const query = `
     mutation M {
       ChangePassword(input: {
