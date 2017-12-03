@@ -1,12 +1,15 @@
 // @flow
 
-import { GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLID } from 'graphql';
+import { GraphQLList, GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLID } from 'graphql';
 import { connectionArgs, fromGlobalId } from 'graphql-relay';
 
 import UserType from './UserType';
+import PersonType from './PersonType';
 import { NodeField } from '../interface/NodeInterface';
 import { UserLoader } from '../loader';
 import UserConnection from '../connection/UserConnection';
+
+import { Person } from '../model';
 
 export default new GraphQLObjectType({
   name: 'Query',
@@ -38,6 +41,17 @@ export default new GraphQLObjectType({
         },
       },
       resolve: (obj, args, context) => UserLoader.loadUsers(context, args),
+    },
+    persons: {
+      type: new GraphQLList(PersonType),
+      args: {
+        name: {
+          type: GraphQLString,
+        },
+      },
+      resolve(_, args) {
+        return Person.find({ name: { $regex: `.*${args.name}.*` } });
+      },
     },
   }),
 });
