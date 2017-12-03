@@ -36,11 +36,9 @@ export default class User {
 
 export const getLoader = () => new DataLoader(ids => mongooseLoader(UserModel, ids));
 
-const viewerCanSee = (viewer, data) => {
+const viewerCanSee = (viewer, data) =>
   // Anyone can see another user
-  return true;
-};
-
+  true;
 export const load = async (context: GraphQLContext, id: string): Promise<?User> => {
   if (!id) {
     return null;
@@ -55,9 +53,7 @@ export const load = async (context: GraphQLContext, id: string): Promise<?User> 
   return viewerCanSee(context, data) ? new User(data, context) : null;
 };
 
-export const clearCache = ({ dataloaders }: GraphQLContext, id: string) => {
-  return dataloaders.UserLoader.clear(id.toString());
-};
+export const clearCache = ({ dataloaders }: GraphQLContext, id: string) => dataloaders.UserLoader.clear(id.toString());
 
 export const loadUsers = async (context: GraphQLContext, args: ConnectionArguments) => {
   const where = args.search ? { name: { $regex: new RegExp(`^${args.search}`, 'ig') } } : {};
