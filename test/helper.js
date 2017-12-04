@@ -65,8 +65,8 @@ function clearDatabase() {
 
 export function getContext(context: Object) {
   const dataloaders = Object.keys(loaders).reduce(
-    (dataloaders, loaderKey) => ({
-      ...dataloaders,
+    (dataLoaders, loaderKey) => ({
+      ...dataLoaders,
       [loaderKey]: loaders[loaderKey].getLoader(),
     }),
     {},
