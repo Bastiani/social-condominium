@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLObjectType, GraphQLString, GraphQLID } from 'graphql';
 import { globalIdField } from 'graphql-relay';
 
 export default new GraphQLObjectType({
@@ -25,6 +25,10 @@ export default new GraphQLObjectType({
     address: {
       type: GraphQLString,
       resolve: person => person.address,
+    },
+    pets: {
+      type: GraphQLID,
+      resolve: person => person.pets,
     },
   }),
 });
