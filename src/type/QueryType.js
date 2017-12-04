@@ -48,9 +48,13 @@ export default new GraphQLObjectType({
         name: {
           type: GraphQLString,
         },
+        email: {
+          type: GraphQLString,
+        },
       },
-      resolve(_, args) {
-        return Person.find({ name: { $regex: `.*${args.name}.*` } });
+      resolve(obj, args) {
+        console.log(args.email);
+        return Person.find({ $or: [{ name: { $regex: `.*${args.name}.*` } }, { email: args.email }] });
       },
     },
   }),
