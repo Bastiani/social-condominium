@@ -17,31 +17,39 @@ export default mutationWithClientMutationId({
     },
   },
   mutateAndGetPayload: async ({ _id, name, species }) => {
-    let pet = await Pet.findOne({ _id });
+    try {
+      let pet = await Pet.findOne({ _id });
 
-    if (pet) {
-      pet.name = name;
-      pet.species = species;
-    } else {
-      pet = new Pet({
-        name,
-        species,
-      });
+      if (pet) {
+        pet.name = name;
+        pet.species = species;
+      } else {
+        pet = new Pet({
+          name,
+          species,
+        });
+      }
+
+      const newPet = await pet.save();
+      return {
+        newPet,
+        error: null,
+      };
+    } catch (err) {
+      return {
+        newPet: null,
+        error: err,
+      };
     }
-
-    return pet
-      .save()
-      .then(newPet => newPet)
-      .catch(error => error);
   },
   outputFields: {
     newPet: {
       type: PetType,
-      resolve: obj => obj,
+      resolve: ({ newPet }) => newPet,
     },
     error: {
       type: GraphQLString,
-      resolve: error => error,
+      resolve: ({ error }) => error,
     },
   },
 });

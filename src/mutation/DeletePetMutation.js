@@ -1,4 +1,4 @@
-import { GraphQLString } from 'graphql';
+import { GraphQLNonNull, GraphQLString } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
 import { Pet } from '../model';
 
@@ -6,29 +6,33 @@ export default mutationWithClientMutationId({
   name: 'DeletePet',
   inputFields: {
     _id: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
   },
   mutateAndGetPayload: async ({ _id }) => {
-    const pet = await Pet.findOne({ _id });
+    try {
+      const pet = await Pet.findOne({ _id });
 
-    if (pet) {
-      return pet
-        .remove()
-        .then(() => ({
-          msg: 'Successfully removed!',
-        }))
-        .catch(msg => msg);
+      if (pet) {
+        await pet.remove();
+        return {
+          message: 'Successfully removed!',
+        };
+      }
+
+      return {
+        message: 'Not found',
+      };
+    } catch (err) {
+      return {
+        message: err,
+      };
     }
-
-    return {
-      msg: 'Not found',
-    };
   },
   outputFields: {
     message: {
       type: GraphQLString,
-      resolve: ({ msg }) => msg,
+      resolve: ({ message }) => message,
     },
   },
 });
