@@ -3378,6 +3378,10 @@ minizlib@^1.0.3:
   dependencies:
     minimist "0.0.8"
 
+mockingoose@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/mockingoose/-/mockingoose-2.4.0.tgz#453f6cb36fa08d9909de6c2153c1b49c5f45ab69"
+
 mongodb-core@2.1.17:
   version "2.1.17"
   resolved "https://registry.yarnpkg.com/mongodb-core/-/mongodb-core-2.1.17.tgz#a418b337a14a14990fb510b923dee6a813173df8"
