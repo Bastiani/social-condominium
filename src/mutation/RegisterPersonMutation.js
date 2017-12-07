@@ -1,4 +1,4 @@
-import { GraphQLString, GraphQLNonNull } from 'graphql';
+import { GraphQLString, GraphQLNonNull, GraphQLID } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
 import { Person } from '../model';
 import PersonType from '../type/PersonType';
@@ -6,6 +6,9 @@ import PersonType from '../type/PersonType';
 export default mutationWithClientMutationId({
   name: 'RegisterPerson',
   inputFields: {
+    _id: {
+      type: GraphQLString,
+    },
     name: {
       type: new GraphQLNonNull(GraphQLString),
     },
@@ -18,40 +21,49 @@ export default mutationWithClientMutationId({
     address: {
       type: GraphQLString,
     },
-    /* pets: {
-      type: GraphQLString,
-    }, */
+    pets: {
+      type: GraphQLID,
+    },
   },
-  mutateAndGetPayload: async ({ name, telephone, email, address }) => {
-    let person = await Person.findOne({ name });
+  mutateAndGetPayload: async ({ _id, name, telephone, email, address, pets }) => {
+    try {
+      let person = await Person.findOne({ _id });
 
-    if (person) {
+      if (person) {
+        person.name = name;
+        person.telephone = telephone;
+        person.email = email;
+        person.address = address;
+        person.pets = pets;
+      } else {
+        person = new Person({
+          name,
+          telephone,
+          email,
+          address,
+          pets,
+        });
+      }
+      const newPerson = await person.save();
+      return {
+        newPerson,
+        error: null,
+      };
+    } catch (err) {
       return {
         newPerson: null,
-        error: 'PERSON_ALREADY_REGISTERED',
+        error: err,
       };
     }
-
-    person = new Person({
-      name,
-      telephone,
-      email,
-      address,
-      // pets,
-    });
-    return person
-      .save()
-      .then(newPerson => newPerson)
-      .catch(error => error);
   },
   outputFields: {
     newPerson: {
       type: PersonType,
-      resolve: obj => obj,
+      resolve: ({ newPerson }) => newPerson,
     },
     error: {
       type: GraphQLString,
-      resolve: error => error,
+      resolve: ({ error }) => error,
     },
   },
 });

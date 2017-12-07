@@ -5,11 +5,12 @@ import { connectionArgs, fromGlobalId } from 'graphql-relay';
 
 import UserType from './UserType';
 import PersonType from './PersonType';
+import PetType from './PetType';
 import { NodeField } from '../interface/NodeInterface';
 import { UserLoader } from '../loader';
 import UserConnection from '../connection/UserConnection';
 
-import { Person } from '../model';
+import { Person, Pet } from '../model';
 
 export default new GraphQLObjectType({
   name: 'Query',
@@ -53,8 +54,21 @@ export default new GraphQLObjectType({
         },
       },
       resolve(obj, args) {
-        console.log(args.email);
         return Person.find({ $or: [{ name: { $regex: `.*${args.name}.*` } }, { email: args.email }] });
+      },
+    },
+    pet: {
+      type: new GraphQLList(PetType),
+      args: {
+        name: {
+          type: GraphQLString,
+        },
+        species: {
+          type: GraphQLString,
+        },
+      },
+      resolve(obj, args) {
+        return Pet.find({ $or: [{ name: { $regex: `.*${args.name}.*` } }, { species: args.species }] });
       },
     },
   }),
