@@ -2,7 +2,7 @@ import { GraphQLObjectType, GraphQLString, GraphQLID } from 'graphql';
 import { globalIdField } from 'graphql-relay';
 
 export default new GraphQLObjectType({
-  name: 'PersonType',
+  name: 'Person',
   description: 'Person data',
   fields: () => ({
     id: globalIdField('Person'),
