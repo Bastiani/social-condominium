@@ -12,6 +12,26 @@ type ChangePasswordPayload {
   clientMutationId: String
 }
 
+input DeletePersonInput {
+  _id: String!
+  clientMutationId: String
+}
+
+type DeletePersonPayload {
+  message: String
+  clientMutationId: String
+}
+
+input DeletePetInput {
+  _id: String!
+  clientMutationId: String
+}
+
+type DeletePetPayload {
+  message: String
+  clientMutationId: String
+}
+
 input LoginEmailInput {
   email: String!
   password: String!
@@ -28,6 +48,10 @@ type Mutation {
   LoginEmail(input: LoginEmailInput!): LoginEmailPayload
   RegisterEmail(input: RegisterEmailInput!): RegisterEmailPayload
   ChangePassword(input: ChangePasswordInput!): ChangePasswordPayload
+  RegisterPerson(input: RegisterPersonInput!): RegisterPersonPayload
+  RegisterPet(input: RegisterPetInput!): RegisterPetPayload
+  DeletePerson(input: DeletePersonInput!): DeletePersonPayload
+  DeletePet(input: DeletePetInput!): DeletePetPayload
 }
 
 # An object with an ID
@@ -51,13 +75,39 @@ type PageInfo {
   endCursor: String
 }
 
-# The root of all... queries
-type Query implements Node {
+# Person data
+type Person {
   # The ID of an object
   id: ID!
+  _id: String
+  name: String
+  telephone: String
+  email: String
+  address: String
+  pets: ID
+}
+
+# Pet data
+type PetType {
+  # The ID of an object
+  id: ID!
+  _id: String
+  name: String
+  species: String
+}
+
+# The root of all... queries
+type Query {
+  # Fetches an object given its ID
+  node(
+    # The ID of an object
+    id: ID!
+  ): Node
   me: User
   user(id: ID!): User
   users(after: String, first: Int, before: String, last: Int, search: String): UserConnection
+  persons(name: String, email: String): [Person]
+  pet(name: String, species: String): [PetType]
 }
 
 input RegisterEmailInput {
@@ -69,6 +119,35 @@ input RegisterEmailInput {
 
 type RegisterEmailPayload {
   token: String
+  error: String
+  clientMutationId: String
+}
+
+input RegisterPersonInput {
+  _id: String
+  name: String!
+  telephone: String
+  email: String
+  address: String
+  pets: ID
+  clientMutationId: String
+}
+
+type RegisterPersonPayload {
+  newPerson: Person
+  error: String
+  clientMutationId: String
+}
+
+input RegisterPetInput {
+  _id: String
+  name: String!
+  species: String
+  clientMutationId: String
+}
+
+type RegisterPetPayload {
+  newPet: PetType
   error: String
   clientMutationId: String
 }
