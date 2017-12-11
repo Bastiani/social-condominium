@@ -57,6 +57,13 @@ export default new GraphQLObjectType({
         return Person.find({ $or: [{ name: { $regex: `.*${args.name}.*` } }, { email: args.email }] });
       },
     },
+    allPersons: {
+      type: new GraphQLList(PersonType),
+      args: {},
+      resolve() {
+        return Person.find({});
+      },
+    },
     pet: {
       type: new GraphQLList(PetType),
       args: {
