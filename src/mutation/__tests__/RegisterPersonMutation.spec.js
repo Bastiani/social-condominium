@@ -9,7 +9,7 @@ xit('should create a new person with parameters are valid', async () => {
   const email = 'rafacdb@gmail.com';
 
   const query = `
-    mutation M {
+    mutation {
       RegisterPerson(input: {
         name: "João Davi de Bastiani",
         telephone: "54 981125116",
@@ -17,6 +17,8 @@ xit('should create a new person with parameters are valid', async () => {
         address: "Rua tal..."
       }) {
         newPerson {
+          id
+          _id
           name
           telephone
           email

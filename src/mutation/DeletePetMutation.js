@@ -1,3 +1,5 @@
+// @flow
+
 import { GraphQLNonNull, GraphQLString } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
 import { Pet } from '../model';
